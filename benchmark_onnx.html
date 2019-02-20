@@ -1,0 +1,33 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script>
+    <script>
+      async function run() {
+        const session = new onnx.InferenceSession({ backendHint: 'webgl' });
+        await session.loadModel("./mobilenetv2/model.onnx");
+
+        console.log("model loaded");
+
+        let start = performance.now();
+        const inputs = [new onnx.Tensor(new Float32Array(3*224*224), 'float32', [1, 3, 224, 224])];
+        await session.run(inputs);
+        elapsed = performance.now() - start;
+        console.log('Warmup took', elapsed);
+
+        let totalElapsed = 0;
+        const N = 20;
+        for (let i = 0; i < N; i++) {
+          start = performance.now();
+          await session.run(inputs);
+          elapsed = performance.now() - start;
+          totalElapsed += elapsed;
+          console.log(`Run ${i+2} took ${elapsed}`);
+        }
+        console.log(`Average ${totalElapsed / N}`);
+      }
+      run();
+    </script>
+  </body>
+</html>
