@@ -1,4 +1,6 @@
-This repo contains standalone pages that profile ONNX.js and TensorFlow.js.
+This repo contains standalone pages for profiling ONNX.js and TensorFlow.js.
+
+We profile two models: MobileNet v2, and ResNet 50 v2.
 
 # MobileNet
 
@@ -10,4 +12,6 @@ For TensorFlow.js, we used https://storage.googleapis.com/tfjs-models/savedmodel
 
 For ONNX.js, we used the model assets found here: https://github.com/onnx/models/tree/master/resnet50
 
-For TensorFlow.js, we used the model assets found here:
+For TensorFlow.js, we used https://storage.googleapis.com/tfjs-models/savedmodel/resnet_50_v2/tensorflowjs_model.pb
+
+We converted this model from TF Hub: https://tfhub.dev/google/imagenet/resnet_v2_50/classification/1

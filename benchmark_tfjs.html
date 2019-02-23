@@ -4,16 +4,23 @@
   <body>
     <script src="https://unpkg.com/@tensorflow/tfjs"></script>
     <script>
-      const base_url = 'https://storage.googleapis.com/tfjs-models/savedmodel/mobilenet_v2_1.0_224/';
+      // MobileNet v2
+      // const base_url = 'https://storage.googleapis.com/tfjs-models/savedmodel/mobilenet_v2_1.0_224/';
+
+      // ResNet 50 v2
+      const base_url = 'https://storage.googleapis.com/tfjs-models/savedmodel/resnet_50_v2/';
+
       async function run() {
-        const model = await tf.loadFrozenModel(base_url + 'tensorflowjs_model.pb', base_url + 'weights_manifest.json');
+        const model = await tf.loadFrozenModel(
+          base_url + 'tensorflowjs_model.pb',
+          base_url + 'weights_manifest.json');
 
         console.log('model loaded');
 
         let start = performance.now();
         const inputs = tf.randomNormal([1, 224, 224, 3]);
         await model.execute({'images': inputs}).dataSync();
-        elapsed = performance.now() - start;
+        let elapsed = performance.now() - start;
         console.log('Warmup took', elapsed);
 
         let totalElapsed = 0;

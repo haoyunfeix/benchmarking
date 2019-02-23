@@ -4,16 +4,21 @@
   <body>
     <script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script>
     <script>
+      // MobileNet v2
+      // const base_url = './mobilenetv2/';
+
+      // ResNet 50 v2
+      const base_url = './resnet50/';
       async function run() {
         const session = new onnx.InferenceSession({ backendHint: 'webgl' });
-        await session.loadModel("./mobilenetv2/model.onnx");
+        await session.loadModel(base_url + 'model.onnx');
 
-        console.log("model loaded");
+        console.log('model loaded');
 
         let start = performance.now();
         const inputs = [new onnx.Tensor(new Float32Array(3*224*224), 'float32', [1, 3, 224, 224])];
         await session.run(inputs);
-        elapsed = performance.now() - start;
+        let elapsed = performance.now() - start;
         console.log('Warmup took', elapsed);
 
         let totalElapsed = 0;
