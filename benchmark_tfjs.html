@@ -18,7 +18,7 @@
         console.log('model loaded');
 
         let start = performance.now();
-        const inputs = tf.randomNormal([1, 224, 224, 3]);
+        let inputs = tf.zeros([1, 224, 224, 3]);
         await model.execute({'images': inputs}).dataSync();
         let elapsed = performance.now() - start;
         console.log('Warmup took', elapsed);
@@ -27,6 +27,7 @@
         const N = 20;
         for (let i = 0; i < N; i++) {
           start = performance.now();
+          inputs = tf.zeros([1, 224, 224, 3]);
           model.execute({'images': inputs}).dataSync();
           elapsed = performance.now() - start;
           totalElapsed += elapsed;
