@@ -8,18 +8,20 @@
       // const base_url = 'https://storage.googleapis.com/tfjs-models/savedmodel/mobilenet_v2_1.0_224/';
 
       // ResNet 50 v2
-      const base_url = 'https://storage.googleapis.com/tfjs-models/savedmodel/resnet_50_v2/';
+      //const base_url = 'https://storage.googleapis.com/tfjs-models/savedmodel/resnet_50_v2/';
+      const base_url = 'https://storage.googleapis.com/tfjs-models/savedmodel/posenet/resnet50/quant2/model-stride32.json';
 
       async function run() {
-        const model = await tf.loadFrozenModel(
-          base_url + 'tensorflowjs_model.pb',
-          base_url + 'weights_manifest.json');
+        //const model = await tf.loadFrozenModel(
+        //  base_url + 'tensorflowjs_model.pb',
+        //  base_url + 'weights_manifest.json');
+        const model = await tf.loadGraphModel(base_url);
 
         console.log('model loaded');
 
         let start = performance.now();
         let inputs = tf.zeros([1, 224, 224, 3]);
-        await model.execute({'images': inputs}).dataSync();
+        await model.predict(inputs)[0].data();
         let elapsed = performance.now() - start;
         console.log('Warmup took', elapsed);
 
@@ -28,7 +30,7 @@
         for (let i = 0; i < N; i++) {
           start = performance.now();
           inputs = tf.zeros([1, 224, 224, 3]);
-          model.execute({'images': inputs}).dataSync();
+          model.predict(inputs)[0].data();
           elapsed = performance.now() - start;
           totalElapsed += elapsed;
           console.log(`Run ${i+2} took ${elapsed}`);
